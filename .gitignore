@@ -1,0 +1,4 @@
+/bin/
+/node_modules/
+strong-password.txt
+.envrc

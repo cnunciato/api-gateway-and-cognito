@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome!</title>
+    <style>
+        #signed-in-stuff {
+            display: none;
+        }
+    </style>
+    <script>
+
+        var config = {
+            token: null,
+            client: null,
+        };
+
+        window.addEventListener("DOMContentLoaded", function() {
+
+            // Save the token.
+            config.token = location.search.replace("?id=", "");
+
+            fetch("config")
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(json) {
+                    config.client = json;
+                });
+
+            if (config.token) {
+
+                // Fetch a protected resource.
+                // TODO: Handle expired tokens, and also handle refreshing them.
+                fetch("api", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": config.token,
+                    },
+                })
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(json) {
+                        document.getElementById("response").textContent = JSON.stringify(json);
+                        document.getElementById("signed-in-stuff").style.display = "block";
+                    });
+            }
+        });
+
+        function handleSignIn() {
+            window.location.href = config.client.signInUrl;
+        }
+
+        function handleSignUp() {
+            window.location.href = config.client.signUpUrl;
+        }
+    </script>
+</head>
+<body>
+    <h1>Welcome!</h1>
+
+    <div id="signed-in-stuff">
+        <p>You should be signed in!</p>
+        <h2>Protected Resource</h2>
+        <pre id="response"></pre>
+    </div>
+
+    <button onclick="handleSignIn()">Sign In</button>
+    <button onclick="handleSignUp()">Sign Up</button>
+</body>
+</html>
