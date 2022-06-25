@@ -9,6 +9,6 @@
         "@pulumi/pulumi": "^1.0.0",
         "@types/node-fetch": "^2.5.4",
         "jsonwebtoken": "^8.5.1",
-        "node-fetch": "^2.6.0"
+        "node-fetch": "^2.6.7"
     }
 }
